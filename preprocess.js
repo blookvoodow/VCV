@@ -1,38 +1,5 @@
-var fs = require('fs');
 const levenshtein = require('js-levenshtein');
-let fc = fs.readFileSync('./data/posts.json');
-
-// let playerInfo = [
-//     "pisskop replaced Redemption, Vanilla Townie, killed Night 4",
-//     "Jesus Louisus replaced Psyche replaced Zuckerberg, Vanilla Townie, killed Night 5",
-//     "Performer, Town 2-shot Vigilante, lynched Day 4",
-//     "Not_Mafia, Mafia Neapolitan, lynched Day 6",
-//     "Detective Pikachu, Mafia Nurse, lynched Day 1",
-//     "nomnomnom replaced ChannelDelibird, Town Doctor, killed Night 1",
-//     "chennisden replaced Gamma Emerald, Town Multitasking Compulsive-Fruit Vendor Compulsive-Visitor, killed Night 1",
-//     "LuckyOtter, Town Tracker, killed Night 2",
-//     "bob3141 replaced MaryJoLisa, Mafia Multitasking Compulsive-Fruit Vendor Fruit Vendor Enabler Visitor Enabler, lynched Day 2",
-//     "Vorkuta, Vanilla Townie, lynched Day 3",
-//     "Lil Uzi Vert, Town Mason, survived and won",
-//     "PenguinPower, Town Mason Multitasking Compulsive-Fruit Vendor Compulsive-Visitor, killed Night 3",
-//     "schadd_, Vanilla Townie, survived and won"
-// ]
-
-let playerInfo = [
-    "nomnomnom, Mafia 1-shot Strongman, survived and won",
-    "pisskop replaced Cinnamon, Town 1-shot Bulletproof Miller, lynched Day 4",
-    "NerfedBuJ, Vanilla Townie, killed Night 2",
-    "skitter30, Vanilla Townie, endgamed",
-    "u r a person 2, Mafia Goon, lynched Day 2",
-    "Saladman27, Vanilla Townie, lynched Day 3",
-    "teacher, Town Doctor, killed Night 2",
-    "Dunnstral, Town JOAT (Neapolitan, Vigilante), killed Night 3",
-    "Nero Cain, Town Rolecop, endgamed",
-    "Shoshin replaced EvilDeanius, Vanilla Townie, killed Night 1",
-    "Creature replaced Detective Pikachu, Vanilla Townie, endgamed",
-    "Flubbernugget, Vanilla Townie, lynched Day 1",
-    "Vorkuta, Mafia Encryptor, survived and won"
-]
+var fs = require('fs');
 
 function parseSlots(_info) {
     let data = _info.map((info, id) => {
@@ -83,31 +50,9 @@ function preprocess(slots, RawVotes) {
         }
     });
 
-    let data = JSON.stringify(processed)
-    fs.writeFileSync('./data/processed.json', data)
+    // let data = JSON.stringify(processed)
+    // fs.writeFileSync('./data/processed.json', data)
     return processed;
-}
-
-function toEdgeList() {
-    let RawVotes = JSON.parse(fc);
-    let slots = parseSlots(playerInfo)
-    let votes = preprocess(slots, RawVotes)
-
-    // nodes
-    let nodes_town = slots.filter(x => x.isTown).map(x => x.id)
-    let nodes_mafia = slots.filter(x => !x.isTown).map(x => x.id)
-    console.log(nodes_town, nodes_mafia)
-
-    // generates an edge list from vote data
-    // voter id, votee id, weight
-    let edges = []
-    votes.forEach(vote => {
-        let playerId = intendedTarget(vote.votee, slots)
-        edges.push([vote.id, playerId, vote.duration / 3600000])
-    })
-
-    let data = JSON.stringify(edges)
-    fs.writeFileSync('./data/edges.json', data)
 }
 
 function intendedTarget(votee, slots) {
@@ -132,6 +77,8 @@ function intendedTarget(votee, slots) {
     return playerId;
 }
 
-
-toEdgeList()
-// parseSlots(playerInfo)
+module.exports = {
+    parseSlots,
+    preprocess,
+    intendedTarget
+}
