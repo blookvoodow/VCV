@@ -1,3 +1,4 @@
-const levenshtein = require('js-levenshtein');
-
-console.log(levenshtein('vorki', 'vork'))
+const data =
+  [ 1, 2, 3, 4 ]
+  
+console.log(data.flatMap(x => Array(x).fill(x)))
