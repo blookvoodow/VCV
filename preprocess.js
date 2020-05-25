@@ -32,10 +32,11 @@ function preprocess(slots, RawVotes) {
             let isUnvote = vote.toLowerCase().includes("unvote")
             let votee = vote.split(": ")[1]
             let duration = new Date(votes[j].date) - new Date(votes[i].date)
+            let postDelta = votes[j].post - votes[i].post
 
             // filter out unvotes
             !isUnvote && processed.push({
-                id: slot.id, voter, votee, duration
+                id: slot.id, voter, votee, duration, postDelta
             })
 
             // include the last vote (duration cannot be calculated)
@@ -44,7 +45,8 @@ function preprocess(slots, RawVotes) {
                     id: slot.id,
                     voter: votes[j].author,
                     votee: votes[j].content.split(": ")[1],
-                    duration: null
+                    duration: null,
+                    postDelta: 1
                 })
             }
         }

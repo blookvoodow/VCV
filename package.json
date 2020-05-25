@@ -4,8 +4,8 @@
   "description": "vote count analysis",
   "main": "index.js",
   "scripts": {
-    "start": "node voteScrapper.js",
-    "test": "node --inspect-brk voteScrapper.js"
+    "start": "node index.js",
+    "test": "node --inspect-brk index.js"
   },
   "author": "yessiree",
   "license": "ISC",

@@ -13,7 +13,7 @@ var fs = require('fs');
     let rawVotes = await scrapVotes(thread)
     console.log('scrapped votes')
 
-    // let data = JSON.stringify(posts)
+    // let data = JSON.stringify(rawVotes)
     // fs.writeFileSync('./data/posts.json', data)
 
     let slots = parseSlots(players)
@@ -24,11 +24,14 @@ var fs = require('fs');
     let edges = []
     votes.forEach(vote => {
         let playerId = intendedTarget(vote.votee, slots)
-        edges.push([vote.id, playerId, vote.duration / 3600000])
+        edges.push([vote.id, playerId, vote.duration / 3600000, vote.postDelta])
     })
+    console.log('edgelist generated')
 
-    // let data = JSON.stringify(edges)
-    // fs.writeFileSync('./data/edges.json', data)
+    let data = JSON.stringify(edges)
+    fs.writeFileSync('./data/edges.json', data)
+
+    process.exit(1)
 
     fs.truncateSync(filename)
     edges.forEach(edge => {

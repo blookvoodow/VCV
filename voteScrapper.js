@@ -45,7 +45,7 @@ async function scrapVotes(_url) {
         pages.push(_url + "&view=print&ppp=200&start=" + i)
     }
 
-    // let result = await rp.get(pages[0])
+    // let result = await Promise.all([rp.get(pages[0])])
     let result = await Promise.all(pages.map(page => rp.get(page)))
         .catch(e => console.error(e))
 
@@ -54,12 +54,12 @@ async function scrapVotes(_url) {
         // remove quotes and spoilers
         $('blockquote').remove();
         $('.quotecontent').remove();
-        let data = $('.post').map(function() {
+        let data = $('.post').map(function(id) {
             return {
                 author: $('.author strong', $(this)).text(),
                 date: $('.date strong', $(this)).text(),
                 content: $('.content span[class=bbvote]', $(this)).html(),
-                id: this.id + idx * 200
+                post: id + idx * 200
             }
         }).get();
         
