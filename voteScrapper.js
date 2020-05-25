@@ -42,7 +42,7 @@ async function scrapVotes(_url) {
 
     // let result = await rp.get(pages[0])
     let result = await Promise.all(pages.map(page => rp.get(page)))
-    return result.map(res => {
+    return result.map((res, idx) => {
         let $ = cheerio.load(res.body)
         // remove quotes and spoilers
         $('blockquote').remove();
@@ -51,7 +51,8 @@ async function scrapVotes(_url) {
             return {
                 author: $('.author strong', $(this)).text(),
                 date: $('.date strong', $(this)).text(),
-                content: $('.content span[class=bbvote]', $(this)).html()
+                content: $('.content span[class=bbvote]', $(this)).html(),
+                id: this.id + idx * 200
             }
         }).get();
         
@@ -67,5 +68,4 @@ async function test() {
     fs.writeFileSync('./data/posts.json', data)
 }
 
-// test()
-parseGameInfo()
+test()
