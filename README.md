@@ -17,7 +17,7 @@ As the network is weighted, the weight of an edge represents the severity of con
 
 Weights are calculated based on duration of the vote. The reasoning is that votes generate pressure and may or may not start wagons. Therefore, the longer the vote is cast, the greater the pressure and the degree of conflict between the two players. Of course, this may not always be the case, but our assumption is the voters will be forced to defend their votes when confronted by other players, and they will either retract their votes or keep their votes as a result.
 
-Weights are measured in milliseconds and normalized by 2 days. (48 hours)
+Weights are measured in milliseconds and normalized by 1 hour.
 
 ### Further Work
 

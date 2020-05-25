@@ -2,23 +2,28 @@ var cheerio = require("cheerio");
 var requestp = require('request-promise');
 var fs = require('fs');
 
+const baseUrl = 'https://forum.mafiascum.net';
+
 let rp = requestp.defaults({
-    baseUrl: 'https://forum.mafiascum.net',
-    timeout: 3000,
+    baseUrl,
+    timeout: 5000,
     resolveWithFullResponse: true,
     jar: true
 });
 
-let thread = ""
-let players = []
-
 function parseGameInfo() {
-    fs.readFile('./data/game.txt', 'utf-8', (err, data) => {
-        lines = data.split('\n')
-        thread = lines[0]
-        players = lines.slice(lines.indexOf('Player List:')+1)
-        console.log(players)
-    })
+    let data = fs.readFileSync('./data/game.txt', 'utf-8')
+    lines = data.split(/\r?\n|\r/)
+    thread = lines[0]
+    if (thread.indexOf(baseUrl) >= 0) {
+        thread = thread.slice(baseUrl.length)
+    }
+    players = lines.slice(lines.indexOf('Player List:')+1)
+
+    return {
+        thread,
+        players
+    }
 }
 
 async function getNumberOfPosts(_url) {
@@ -42,6 +47,8 @@ async function scrapVotes(_url) {
 
     // let result = await rp.get(pages[0])
     let result = await Promise.all(pages.map(page => rp.get(page)))
+        .catch(e => console.error(e))
+
     return result.map((res, idx) => {
         let $ = cheerio.load(res.body)
         // remove quotes and spoilers
@@ -62,10 +69,7 @@ async function scrapVotes(_url) {
     }).flatMap(x => x);
 }
 
-async function test() {
-    let posts = await scrapVotes(thread)
-    let data = JSON.stringify(posts)
-    fs.writeFileSync('./data/posts.json', data)
+module.exports = {
+    parseGameInfo,
+    scrapVotes
 }
-
-test()
