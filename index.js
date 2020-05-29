@@ -24,14 +24,12 @@ var fs = require('fs');
     let edges = []
     votes.forEach(vote => {
         let playerId = intendedTarget(vote.votee, slots)
-        edges.push([vote.id, playerId, vote.duration / 3600000, vote.postDelta])
+        edges.push([vote.id, playerId, vote.postDelta])
     })
     console.log('edgelist generated')
 
-    let data = JSON.stringify(edges)
-    fs.writeFileSync('./data/edges.json', data)
-
-    process.exit(1)
+    // let data = JSON.stringify(edges)
+    // fs.writeFileSync('./data/edges.json', data)
 
     fs.truncateSync(filename)
     edges.forEach(edge => {

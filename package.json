@@ -4,7 +4,7 @@
   "description": "vote count analysis",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.js && python3 main.py",
     "test": "node --inspect-brk index.js"
   },
   "author": "yessiree",
