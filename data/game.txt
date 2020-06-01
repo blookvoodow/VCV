@@ -11,7 +11,7 @@ chkflip rosterfoster, Town, Killed Night 2
 Flubbernugget, Town
 Senator, Town, Lynched Day 1
 TiphaineDeath, Town, Killed Night 1
-Doctor Drew, Mafia, Lynched Day 3,
+Doctor Drew, Mafia, Lynched Day 3
 gobbledygook, Town
 Mordhaus, Town
 BrightEyedFish, Town
